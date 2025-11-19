@@ -1,0 +1,9 @@
+# Folder
+.pytest_cache
+__pycache__
+google-search
+output
+
+# File
+browser-state.json
+browser-state-fingerprint.json
