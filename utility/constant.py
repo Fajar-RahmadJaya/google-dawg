@@ -1,23 +1,23 @@
 import os
 
 # Info (Change as needed)
-site = "travelexic.in"
+site = "example.com"
 categories = [
-              "files containing password",
-              "error messages",
-              "files containing juicy info",
-              "files containing username",
-              "footholds",
-              "network or server vulnerability data",
-              "pages containing login portals",
-              "sensitive directories",
-              "sensitive online shopping info",
-              "various online devices",
-              "vulnerable files",
-              "vulnerable servers",
-              "web server detection"
-              ]
-google_search = r"D:\Project\google-dawg\google-search"
+            "files containing password",
+            "error messages",
+            "files containing juicy info",
+            "files containing username",
+            "footholds",
+            "network or server vulnerability data",
+            "pages containing login portals",
+            "sensitive directories",
+            "sensitive online shopping info",
+            "various online devices",
+            "vulnerable files",
+            "vulnerable servers",
+            "web server detection"
+            ]
+google_search = r"Path/to/google-search"
 
 
 # Path
