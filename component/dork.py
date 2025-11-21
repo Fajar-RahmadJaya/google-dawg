@@ -34,10 +34,10 @@ class Dork:
                 continue
             # Insert | (OR operator) if there is 'site:' on dork
             if "site:" in split_dork:
-                formatted_dork = f"{dork} | site:{site}"
+                formatted_dork = f"{split_dork} | site:{site}"
             # Insert site on dork
             else:
-                formatted_dork = f"{dork} site:{site}"
+                formatted_dork = f"{split_dork} site:{site}"
             dork_list.append(formatted_dork)
 
         return dork_list
