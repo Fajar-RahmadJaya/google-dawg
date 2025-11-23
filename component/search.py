@@ -1,5 +1,6 @@
-from utility.constant import (queue_json, google_search, site, result_folder)
-from utility.logger import (error_log, info_log)
+from utility.constant import (output_folder)
+from utility.utils import (google_search, queue_path)
+from utility.logger import (error_logger, info_logger)
 
 import subprocess
 import os
@@ -11,18 +12,17 @@ init(autoreset=True)
 
 
 class Search:
-    """def npm_link(self):
-        # Run 'npm link'
-        subprocess.run(
-            'npm link',
-            shell=True,
-            executable="C:\\WINDOWS\\system32\\cmd.exe",
-            check=True,
-            stdout=subprocess.DEVNULL,
-        )"""
+    def run_scrapper(self, site):
+        # Define logger
+        info_log = info_logger(site)
+        error_log = error_logger(site)
 
-    def run_scrapper(self):
+        # Set CMD current directory
         os.chdir(google_search)
+
+        # Define queue json
+        queue_json = queue_path(site)
+
         # Get all dork
         with open(queue_json, "r", encoding="utf-8") as f:
             alldork = json.load(f)
@@ -30,6 +30,10 @@ class Search:
         for category, dorks in alldork.items():
             # Print and log category dork start
             print(f"\nStarting {category}:")
+
+            # Result folder
+            result_folder = os.path.join(output_folder, site, "result")
+            os.makedirs(result_folder, exist_ok=True)
 
             # Create category file
             category_file = os.path.join(result_folder, f"{category}.txt")
@@ -71,11 +75,11 @@ class Search:
 
                     # Write and get link count
                     link_count = self.write_link(category_file, clean_result,
-                                                 dork)
+                                                 dork, site)
 
                     # Print and log how much link found
                     print(f"{Fore.BLUE}{link_count} Found")
-                    info_log(f"{single_param_dork}: {link_count} Found")
+                    info_log.info(f"{single_param_dork}: {link_count} Found")
 
                     # Remove completed dork from queue
                     alldork[category].remove(dork)
@@ -85,7 +89,7 @@ class Search:
                     # If there is no result on command output
                     print(f"{Fore.RED}Search Failed\n{command.stderr}")
                     # Log error
-                    error_log(f"{single_param_dork}:\n{command.stderr}")
+                    error_log.error(f"{single_param_dork}:\n{command.stderr}")
 
     def clean_result(self, rough_result):
         # Clean rough result
@@ -102,7 +106,7 @@ class Search:
 
         return clean_result
 
-    def write_link(self, category_file, clean_result, dork):
+    def write_link(self, category_file, clean_result, dork, site):
         # Count link with target site on it
         link_count = 0
         with open(category_file, "a", encoding="utf-8") as f:
