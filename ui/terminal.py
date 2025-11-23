@@ -1,15 +1,78 @@
-import os
-
 from component.search import Search
 from component.dork import Dork
-from utility.constant import queue_json
+from component.terminal_component import TerminalComponent
+from utility.utils import (google_search, site_list)
+from utility.constant import (output_folder)
+
+import os
 
 
-class Terminal(Search, Dork):
-    def run(self):
-        # self.npm_link()
-        if not os.path.exists(queue_json):
-            self.get_queue()
+class Terminal(Search, Dork, TerminalComponent):
+    def terminal(self):
+        print("---------- Google Dawg ----------")
+        self.gs_path()
+
+        # Check whether output folder is empty or not
+        if not os.listdir(output_folder):
+            site = self.new_site()
         else:
-            print("Resuming dork")
-        self.run_scrapper()
+            site = self.resume()
+
+        # Run search
+        while True:
+            self.run_scrapper(site)
+
+    def gs_path(self):
+        # Check whether the google-search path is empty or not
+        if not os.path.isdir(google_search):
+            print("google-search path invalid, please enter correct google-search path.") # noqa
+            gs_input = input("Enter google-search path: ")
+            # Write input to config
+            self.write_gs_path(gs_input)
+
+        # Check whether google-search is filled or not
+        if not google_search:
+            gs_input = input("Enter google-search path: ")
+
+            # Make sure input is valid
+            if not os.path.isdir(gs_input):
+                print("google-search path invalid, please enter correct google-search path.") # noqa
+                gs_input = input("Enter google-search path: ")
+
+            # Write input to config
+            self.write_gs_path(gs_input)
+        # To do: option to change path
+
+    def new_site(self):
+        site = input("Target site: ")
+
+        # Site folder
+        site_folder = os.path.join(output_folder, site)
+        os.makedirs(site_folder, exist_ok=True)
+
+        # get queue
+        self.get_queue(site)
+
+        return site
+
+    def resume(self):
+        print("Unfinished dork detected. Would you like to resume it?")
+
+        # Ask which one need to resume
+        for idx, site in enumerate(site_list, 1):
+            print(f"{idx}. {site}")
+        print("n. Select new target site")
+        resume_input = input("Input: ")
+
+        # Handle input
+        if resume_input.lower() == "n":
+            site = self.new_site()
+        else:
+            try:
+                # Substract by one to start from 0
+                site = site_list[int(resume_input) - 1]
+            except (ValueError, IndexError):
+                print("Invalid selection., please choose the number on the site list") # noqa
+                return
+
+        return site
