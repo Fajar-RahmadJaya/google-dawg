@@ -1,33 +1,37 @@
+from utility.constant import output_folder
+
 import logging
-from utility.constant import (log, error_log)
-
-# Info logger setup
-info_logger = logging.getLogger('info_logger')
-info_handler = logging.FileHandler(log, encoding="utf-8")
-info_handler.setLevel(logging.INFO)
-info_formatter = logging.Formatter('%(asctime)s %(message)s',
-                                   datefmt='[%Y-%m-%d %H:%M:%S]')
-info_handler.setFormatter(info_formatter)
-info_logger.addHandler(info_handler)
-info_logger.setLevel(logging.INFO)
-info_logger.propagate = False
+import os
 
 
-def info_log(message):
-    info_logger.info(message)
+def info_logger(site):
+    # Info logger setup
+    log = os.path.join(output_folder, site, "log.txt")
+    open(log, 'a').close()
+    info_logger = logging.getLogger(f'info_logger_{site}')
+    if not info_logger.handlers:
+        handler = logging.FileHandler(log, encoding="utf-8")
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s %(message)s',
+                                      datefmt='[%Y-%m-%d %H:%M:%S]')
+        handler.setFormatter(formatter)
+        info_logger.addHandler(handler)
+        info_logger.setLevel(logging.INFO)
+        info_logger.propagate = False
+    return info_logger
 
 
-# Error logger setup
-error_logger = logging.getLogger('error_logger')
-error_handler = logging.FileHandler(error_log, encoding="utf-8")
-error_handler.setLevel(logging.ERROR)
-error_formatter = logging.Formatter('%(asctime)s %(message)s',
-                                    datefmt='[%Y-%m-%d %H:%M:%S]')
-error_handler.setFormatter(error_formatter)
-error_logger.addHandler(error_handler)
-error_logger.setLevel(logging.ERROR)
-error_logger.propagate = False
-
-
-def error_log(message):
-    error_logger.error(message)
+def error_logger(site):
+    error_log = os.path.join(output_folder, site, "error log.txt")
+    open(error_log, 'a').close()
+    error_logger = logging.getLogger(f'error_logger_{site}')
+    if not error_logger.handlers:
+        handler = logging.FileHandler(error_log, encoding="utf-8")
+        handler.setLevel(logging.ERROR)
+        formatter = logging.Formatter('%(asctime)s %(message)s',
+                                      datefmt='[%Y-%m-%d %H:%M:%S]')
+        handler.setFormatter(formatter)
+        error_logger.addHandler(handler)
+        error_logger.setLevel(logging.ERROR)
+        error_logger.propagate = False
+    return error_logger
