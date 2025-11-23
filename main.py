@@ -3,7 +3,7 @@ from ui.terminal import Terminal
 
 def main():
     program = Terminal()
-    program.run()
+    program.terminal()
 
 
 if __name__ == "__main__":
