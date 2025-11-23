@@ -14,7 +14,7 @@ class CLI(Search, Queue, CLIComponent):
 
         # Check whether output folder is empty or not
         if not os.listdir(output_folder):
-            site = self.new_site()
+            site = self.next_action()
         else:
             site = self.next_action()
 
