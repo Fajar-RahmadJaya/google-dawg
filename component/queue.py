@@ -5,7 +5,7 @@ import json
 import os
 
 
-class Dork:
+class Queue:
     def get_queue(self, site):
         # Dictionary to store dork list
         dorks_dict = {}
