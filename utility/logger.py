@@ -3,7 +3,7 @@ from utility.constant import (log, error_log)
 
 # Info logger setup
 info_logger = logging.getLogger('info_logger')
-info_handler = logging.FileHandler(log)
+info_handler = logging.FileHandler(log, encoding="utf-8")
 info_handler.setLevel(logging.INFO)
 info_formatter = logging.Formatter('%(asctime)s %(message)s',
                                    datefmt='[%Y-%m-%d %H:%M:%S]')
@@ -19,7 +19,7 @@ def info_log(message):
 
 # Error logger setup
 error_logger = logging.getLogger('error_logger')
-error_handler = logging.FileHandler(error_log)
+error_handler = logging.FileHandler(error_log, encoding="utf-8")
 error_handler.setLevel(logging.ERROR)
 error_formatter = logging.Formatter('%(asctime)s %(message)s',
                                     datefmt='[%Y-%m-%d %H:%M:%S]')
