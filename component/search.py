@@ -1,12 +1,13 @@
+from utility.constant import (queue_json, google_search, site, result_folder)
+from utility.logger import (error_log, info_log)
+
 import subprocess
 import os
 import re
 import json
 import datetime
-
-from utility.constant import (queue_json, google_search, site,
-                              result_folder)
-from utility.logger import (error_log, info_log)
+from colorama import init, Fore
+init(autoreset=True)
 
 
 class Search:
@@ -29,21 +30,19 @@ class Search:
         for category, dorks in alldork.items():
             # Print and log category dork start
             print(f"\nStarting {category}:")
-            info_log(f"\nStarting {category}:")
 
             # Create category file
             category_file = os.path.join(result_folder, f"{category}.txt")
 
             for dork in dorks:
                 # Insert \ before " to make dork as single parameter
-                single_param_dork = (dork.replace('"', r'\"')
-                                     .replace('|', r'"|"'))
+                single_param_dork = (dork.replace('"', r'\"'))
 
                 # Get current time
                 cur_time = datetime.datetime.now()
-                date = cur_time.strftime("%Y-%m-%d %H:%M")
+                date = cur_time.strftime("%Y-%m-%d %H:%M:%S")
 
-                print(f"[{date}] {dork}:", end=" ", flush=True)
+                print(f"{Fore.GREEN}[{date}] {Fore.RESET}{dork}:", end=" ", flush=True) # noqa
 
                 command = subprocess.run(
                     f'google-search --limit 10000 "{single_param_dork}"',
@@ -54,18 +53,29 @@ class Search:
                     encoding='utf-8'
                 )
 
+                # Timeout if search failed and retry
+                if "搜索失败" in command.stdout:
+                    #print(Fore.RED + "Captcha or failed search detected. Retrying in 10 minutes") # noqa
+                    # time.sleep(600)
+                    print(Fore.RED + "Retrying . . .")
+                    return
+
                 # Find rough result from command output
                 rough_result = re.search(r'"results":\s*(\[[\s\S]*)',
                                          command.stdout, re.DOTALL)
 
                 # Print and log
                 if rough_result:
-                    # Write result and get link count
-                    link_count = self.write_result(category_file, rough_result)
+                    # Get clean result
+                    clean_result = self.clean_result(rough_result)
+
+                    # Write and get link count
+                    link_count = self.write_link(category_file, clean_result,
+                                                 dork)
 
                     # Print and log how much link found
-                    print(f"{link_count} Found")
-                    info_log(f"{dork}: {link_count} Found")
+                    print(f"{Fore.BLUE}{link_count} Found")
+                    info_log(f"{single_param_dork}: {link_count} Found")
 
                     # Remove completed dork from queue
                     alldork[category].remove(dork)
@@ -73,11 +83,11 @@ class Search:
                         json.dump(alldork, f, ensure_ascii=False, indent=2)
                 else:
                     # If there is no result on command output
-                    print("Search failed")
+                    print(f"{Fore.RED}Search Failed\n{command.stderr}")
                     # Log error
-                    error_log(f"{single_param_dork}: {command.stderr}")
+                    error_log(f"{single_param_dork}:\n{command.stderr}")
 
-    def write_result(self, category_file, rough_result):
+    def clean_result(self, rough_result):
         # Clean rough result
         # Split result
         split_result = rough_result.group(1).splitlines()
@@ -90,14 +100,16 @@ class Search:
         # Make result readable with adding space
         clean_result = json.loads("\n".join(split_result))
 
-        # Count and write link from clean result
+        return clean_result
+
+    def write_link(self, category_file, clean_result, dork):
+        # Count link with target site on it
         link_count = 0
         with open(category_file, "a", encoding="utf-8") as f:
             for item in clean_result:
-                # Only get link with target site on it
                 if 'link' in item and site in item['link']:
-                    # Write link to output
-                    f.write(item['link'] + "\n")
+                    # Write result to output
+                    f.write(f"{dork}: {item['link']}\n")
                     link_count += 1
 
         return link_count
