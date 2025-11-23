@@ -1,14 +1,14 @@
 from component.search import Search
-from component.dork import Dork
-from component.terminal_component import TerminalComponent
+from component.queue import Queue
+from component.cli_component import CLIComponent
 from utility.utils import (google_search, site_list)
 from utility.constant import (output_folder)
 
 import os
 
 
-class Terminal(Search, Dork, TerminalComponent):
-    def terminal(self):
+class CLI(Search, Queue, CLIComponent):
+    def cli(self):
         print("---------- Google Dawg ----------")
         self.gs_path()
 
@@ -16,11 +16,11 @@ class Terminal(Search, Dork, TerminalComponent):
         if not os.listdir(output_folder):
             site = self.new_site()
         else:
-            site = self.resume()
+            site = self.next_action()
 
         # Run search
         while True:
-            self.run_scrapper(site)
+            self.run_search(site)
 
     def gs_path(self):
         # Check whether the google-search path is empty or not
@@ -43,7 +43,7 @@ class Terminal(Search, Dork, TerminalComponent):
             self.write_gs_path(gs_input)
         # To do: option to change path
 
-    def new_site(self):
+    def next_action(self):
         site = input("Target site: ")
 
         # Site folder
@@ -56,16 +56,16 @@ class Terminal(Search, Dork, TerminalComponent):
         return site
 
     def resume(self):
-        print("Unfinished dork detected. Would you like to resume it?")
+        print("Choose next action:")
 
         # Ask which one need to resume
         for idx, site in enumerate(site_list, 1):
-            print(f"{idx}. {site}")
-        print("n. Select new target site")
+            print(f"{idx}. Resume {site}")
+        print("0. Select new site")
         resume_input = input("Input: ")
 
         # Handle input
-        if resume_input.lower() == "n":
+        if resume_input.lower() == "0":
             site = self.new_site()
         else:
             try:

@@ -1,9 +1,9 @@
-from ui.terminal import Terminal
+from ui.cli import CLI
 
 
 def main():
-    program = Terminal()
-    program.terminal()
+    program = CLI()
+    program.cli()
 
 
 if __name__ == "__main__":

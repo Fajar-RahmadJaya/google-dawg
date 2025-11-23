@@ -3,7 +3,7 @@ from utility.constant import (config)
 import json
 
 
-class TerminalComponent:
+class CLIComponent:
     def write_gs_path(self, gs_input):
         try:
             with open(config, 'w', encoding='utf-8') as f:
