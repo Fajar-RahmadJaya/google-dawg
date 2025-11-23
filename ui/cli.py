@@ -12,9 +12,11 @@ class CLI(Search, Queue, CLIComponent):
         print("---------- Google Dawg ----------")
         self.gs_path()
 
+        print(os.listdir(output_folder))
+
         # Check whether output folder is empty or not
         if not os.listdir(output_folder):
-            site = self.next_action()
+            site = self.new_site()
         else:
             site = self.next_action()
 
@@ -43,7 +45,7 @@ class CLI(Search, Queue, CLIComponent):
             self.write_gs_path(gs_input)
         # To do: option to change path
 
-    def next_action(self):
+    def new_site(self):
         site = input("Target site: ")
 
         # Site folder
@@ -55,7 +57,7 @@ class CLI(Search, Queue, CLIComponent):
 
         return site
 
-    def resume(self):
+    def next_action(self):
         print("Choose next action:")
 
         # Ask which one need to resume
