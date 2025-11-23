@@ -1,11 +1,12 @@
+from utility.constant import (dork_folder, categories)
+from utility.utils import (queue_path)
+
 import json
 import os
 
-from utility.constant import (site, queue_json, dork_folder, categories)
-
 
 class Dork:
-    def get_queue(self):
+    def get_queue(self, site):
         # Dictionary to store dork list
         dorks_dict = {}
 
@@ -14,16 +15,19 @@ class Dork:
             category_file = os.path.join(dork_folder, f"{category}.txt")
             if os.path.exists(category_file):
                 with open(category_file, 'r', encoding='utf-8') as dorks:
-                    dork_list = self.format_dork(dorks)
+                    dork_list = self.format_dork(dorks, site)
                     dorks_dict[category] = dork_list
             else:
                 print("Dork data not found")
+
+        # Define queue json
+        queue_json = queue_path(site)
 
         # Write to dictionary to queue_json
         with open(queue_json, 'w', encoding='utf-8') as f:
             json.dump(dorks_dict, f, indent=4, ensure_ascii=False)
 
-    def format_dork(self, dorks):
+    def format_dork(self, dorks, site):
         # List to store formatted dork
         dork_list = []
         for dork in dorks:
