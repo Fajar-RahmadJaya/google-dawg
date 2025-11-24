@@ -1,4 +1,4 @@
-from utility.constant import (dork_folder, categories)
+from utility.constant import (dork_folder)
 from utility.utils import (queue_path)
 
 import json
@@ -6,7 +6,7 @@ import os
 
 
 class Queue:
-    def get_queue(self, site):
+    def get_queue(self, site, categories):
         # Dictionary to store dork list
         dorks_dict = {}
 
