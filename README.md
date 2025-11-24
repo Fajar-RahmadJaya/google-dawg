@@ -44,3 +44,6 @@ pip install -r requirements.txt
         ├── log.txt                                  ; Log for success dork
         ├── queue.json                               ; Dork queue
 ```
+
+## Contribute
+Contibution is welcomed.
