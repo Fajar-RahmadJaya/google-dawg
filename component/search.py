@@ -1,5 +1,4 @@
-from utility.constant import (output_folder)
-from utility.utils import (google_search, queue_path)
+from utility.utils import (google_search, queue_path, result_folder_path)
 from utility.logger import (error_logger, info_logger)
 
 import subprocess
@@ -32,10 +31,10 @@ class Search:
             print(f"\nStarting {category}:")
 
             # Result folder
-            result_folder = os.path.join(output_folder, site, "result")
+            result_folder = result_folder_path(site)
             os.makedirs(result_folder, exist_ok=True)
 
-            # Create category file
+            # Category file
             category_file = os.path.join(result_folder, f"{category}.txt")
 
             for dork in dorks:
