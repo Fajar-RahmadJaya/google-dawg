@@ -1,7 +1,7 @@
 import os
 
 # Info (Change as needed)
-categories = [
+category_list = [
               "files containing password",
               "error messages",
               "files containing juicy info",
