@@ -90,9 +90,9 @@ class Search:
                         json.dump(alldork, f, ensure_ascii=False, indent=2)
                 else:
                     # If there is no result on command output
-                    print(f"{Fore.RED}Search Failed\n{command.stderr}")
+                    print(f"{Fore.RED}{command.stderr}")
                     # Log error
-                    error_log.error(f"{single_param_dork}:\n{command.stderr}")
+                    error_log.error(f"{single_param_dork}: {command.stderr}")
 
     def clean_result(self, rough_result):
         # Clean rough result
