@@ -41,3 +41,7 @@ site_list = get_site()
 
 def queue_path(site):
     return os.path.join(output_folder, site, "queue.json")
+
+
+def result_folder_path(site):
+    return os.path.join(output_folder, site, "result")
