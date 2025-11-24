@@ -79,7 +79,7 @@ class Search:
 
                     # Print and log how much link found
                     if link_count == 0:
-                        print(f"{Fore.Yellow}{link_count} Found")
+                        print(f"{Fore.YELLOW}{link_count} Found")
                     else:
                         print(f"{Fore.BLUE}{link_count} Found")
                     info_log.info(f"{single_param_dork}: {link_count} Found")
