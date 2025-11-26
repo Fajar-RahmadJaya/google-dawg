@@ -5,6 +5,11 @@
 
  <br>
 
+## Google Dorking
+Google dorking is a technique that utilizes advanced search operators, also known as 'dorks,' to find public sensitive files on a website. This file can be an env file, error message containing password, etc., that shouldn't open in the first place. This sensitive file then can be exploited by attacker to hack your site. For example, if you search [filetype:env](https://www.google.com/search?q=filetype%3Aenv) Google will show link of env file. You can see dork database on [Google Hacking Database (GHDB)](https://www.exploit-db.com/google-hacking-database). 
+
+You can scan your site and close open link if you find any. Better safe than sorry.
+
 ## Features
 | **No** | **Feature**                                         | **Description** |
 |--------|-----------------------------------------------------|-----------------|
