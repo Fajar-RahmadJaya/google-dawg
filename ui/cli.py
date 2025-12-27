@@ -10,7 +10,8 @@ import sys
 
 class CLI(Search, Queue, CLIComponent):
     def cli(self):
-        print("---------- Google Dawg ----------")
+        print("---------------------- Google Dawg ----------------------")
+        print("     https://github.com/Fajar-RahmadJaya/google-dawg     \n")
         self.gs_path()
 
         # Check whether output folder is empty or not
@@ -49,7 +50,7 @@ class CLI(Search, Queue, CLIComponent):
         site = input("Target site: ")
 
         # Ask category
-        print("Select dork category:")
+        print("\nSelect dork category:")
         for idx, category in enumerate(category_list, 1):
             print(f"{idx}. {category}")
         category_input = input("Input separated by comma (eg. 1, 2, 3): ")
